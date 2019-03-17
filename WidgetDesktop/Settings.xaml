@@ -1,0 +1,121 @@
+﻿<Window x:Class="WidgetDesktop.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ext="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:properties="clr-namespace:WidgetDesktop.Properties"
+        Title="Settings" Height="500" Width="325" ResizeMode="NoResize"
+        Background="{DynamicResource AlternateBackgroundBrush}"
+        Foreground="{DynamicResource ControlTextBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="125" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Col 0 Row 0 -->
+        <TextBlock Text="Drives To Monitor" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
+        <!-- Col 0 Row 1 -->
+        <ext:CheckListBox x:Name="clb_HDDS" Delimiter="," Grid.Column="0" Grid.Row="1" Width="100" Height="100" Padding="25,0" BorderBrush="{x:Null}"/>
+        <!-- Col 1 Row 0 -->
+        <TextBlock Text="Drive Options" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
+        <!-- Col 1 Row 1 -->
+        <GroupBox Grid.Row="1" Grid.Column="1" Background="Transparent" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0">
+            <StackPanel x:Name="DO_StackPanel">
+                <CheckBox x:Name="LDS_Warn" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LDS_Warn}">
+                    <CheckBox.Content>
+                        <ContentPresenter Content="Low Disk Space Warning &lt; 10%"> </ContentPresenter>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox x:Name="HDU_Warn" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=HDU_Warn}">
+                    <CheckBox.Content>
+                        <ContentPresenter Content="High Disk Usage Warning"></ContentPresenter>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox x:Name="DOS_Act" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=DOS_Act}">
+                    <CheckBox.Content>
+                        <ContentPresenter Content="Display Widget On Start"></ContentPresenter>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox x:Name="SID_Act" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AOT_Act}">
+                    <CheckBox.Content>
+                        <ContentPresenter Content="Always On Top"></ContentPresenter>
+                    </CheckBox.Content>
+                </CheckBox>
+                <TextBlock Text="Display Orientation" HorizontalAlignment="Center" Foreground="{DynamicResource ControlTextBrush}" Margin="0,5,0,0" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton x:Name="rad_HDD_OrientationH" Grid.Column="0" HorizontalAlignment="Center" Checked="HDDOrientation_Checked">
+                        <RadioButton.Content>
+                            <ContentPresenter Content="Horizontal"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton x:Name="rad_HDD_OrientationV" Grid.Column="1" HorizontalAlignment="Center" Checked="HDDOrientation_Checked">
+                        <RadioButton.Content>
+                            <ContentPresenter Content="Vertical"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                </Grid>
+            </StackPanel>
+
+        </GroupBox>
+        <!-- Col 0/1 Row 2 -->
+        <TextBlock Text="Memory Options" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Bottom"></TextBlock>
+        <!-- Col 0/1 Row 3 -->
+        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Foreground="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0">
+            <StackPanel x:Name="MemOpts" Margin="4,10,5,10">
+                <CheckBox x:Name="chk_LMW" Click="CheckBox_Click" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=WarnMem}">
+                    <CheckBox.Content>
+                        <ContentPresenter Content="Low Memory Warning"/>
+                    </CheckBox.Content>
+                </CheckBox>
+                <ext:DoubleUpDown 
+                    x:Name="dud_MemVal" 
+                    FormatString="P" Increment=".001" 
+                    Value="{Binding Source={x:Static properties:Settings.Default}, Path=MemPercentage}"
+                    Maximum=".95" Minimum=".05" 
+                    UpdateValueOnEnterKey="True" IsEnabled="False"
+                    ValueChanged="dud_MemVal_ValueChanged" />
+            </StackPanel>
+        </GroupBox>
+        <!-- Col 0/1 Row 4 -->
+        <TextBlock Text="Display Options (Color Settings)" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBlock>
+        <!-- Col 0 Row 5 -->
+        <GroupBox Grid.Row="5" Grid.Column="0" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0">
+            <GroupBox.Background>
+                <SolidColorBrush Color="#2CD3D3D3" Opacity="0"/>
+            </GroupBox.Background>
+            <StackPanel x:Name="Color_Stack">
+                <RadioButton x:Name="ColorPick_Hard_Drives" Checked="ColorPick_Selected">
+                    <RadioButton.Content>
+                        <TextBlock Text="Hard Drive" TextWrapping="Wrap" />
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton x:Name="ColorPick_Memory" Checked="ColorPick_Selected">
+                    <RadioButton.Content>
+                        <TextBlock Text="Memory" TextWrapping="Wrap" />
+                    </RadioButton.Content>
+                </RadioButton>
+            </StackPanel>
+        </GroupBox>
+        <!-- Col 1 Row 5 -->
+        <StackPanel Grid.Row="5" Grid.Column="1"  VerticalAlignment="Center" Margin="-5,0,5,0">
+            <TextBox x:Name="ColorPick_ValueType1" Text="Free Space Color"></TextBox>
+            <ext:ColorPicker></ext:ColorPicker>
+            <TextBox x:Name="ColorPick_ValueType2" Text="Used Space Color"></TextBox>
+            <ext:ColorPicker Background="#FFDE0606"></ext:ColorPicker>
+        </StackPanel>
+        <Button x:Name="saveSettings" Content="Save" Grid.Row="6" Grid.ColumnSpan="2" Width="100" Height="25" Click="saveSettings_Click" Background="{StaticResource Button.Static.Background}"/>
+    </Grid>
+</Window>
